@@ -1,0 +1,12 @@
+<!--logs.wxml-->
+<view class="container log-list">
+  <view class="cell">
+    手机号: <input bindinput="getMobileInput" />
+  </view>
+  <view class="cell" bindtap="getSmsCode">
+    验证码: <input bindinput="getCodeInput" />
+  </view>
+  <view class="cell">
+      <button bindtap="bind">绑定</button>
+  </view>
+</view>
