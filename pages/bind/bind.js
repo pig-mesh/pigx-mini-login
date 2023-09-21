@@ -1,32 +1,30 @@
 
+import Dialog from '@vant/weapp/dialog/dialog';
+
 Page({
   data: {
     mobile: '',
     code: ''
   },
-  getMobileInput: function(e){
-      this.setData({
-        mobile: e.detail.value
-      })
-  },
-  getCodeInput: function(e){
-    this.setData({
-      code: e.detail.value
-    })
-  },
   getSmsCode: function(){
     wx.request({
-      url: 'http://localhost:8080/admin/mobile/' + this.data.mobile,
+      url: 'http://localhost:9999/admin/mobile/' + this.data.mobile,
       method: 'get',
       success(res) {
         //测试环境报文直接返回了短信验证码，生产环境服务端要接短信通道下发
-        console.log(res)
+        console.log(res.data.msg)
+        Dialog.alert({
+          title: '模拟验证码',
+          message: res.data.msg,
+        }).then(() => {
+          // on close
+        });
       }
     })    
   },
   bind: function(){
     wx.request({
-      url: 'http://localhost:8080/auth/oauth/token?mobile=SMS@'+this.data.mobile+'&code='+this.data.code+'&grant_type=mobile',
+      url: 'http://localhost:9999/auth/oauth2/token?mobile=SMS@'+this.data.mobile+'&code='+this.data.code+'&grant_type=mobile',
       method: 'post',
       header: {
         'Authorization': 'Basic cGlnOnBpZw=='
@@ -36,16 +34,22 @@ Page({
         wx.login({
           success(res){
             wx.request({
-              url: 'http://localhost:8080/admin/social/bind?state=MINI&code=' + res.code,
+              url: 'http://localhost:9999/admin/social/bind?state=MINI&code=' + res.code,
               method: 'post',
               header: {
                 'Authorization': 'Bearer '+token
               },
               success(r) {
-                console.log(r)
-                wx.showToast({
-                  title: '绑定成功，注意观察 sys_user 表 mini_openid 字段是否更新',
-                })
+
+                Dialog.alert({
+                  title: '绑定成功',
+                  message: '注意观察 sys_user 表 mini_openid 字段是否更新',
+                }).then(() => {
+                  wx.navigateTo({
+                    url: '../index/index',
+                  });
+                });
+
               }
             })
           }

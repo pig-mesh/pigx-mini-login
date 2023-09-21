@@ -1,7 +1,10 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-   <button bindtap="login">登录</button>
+  <view class="userinfo" wx:if="{{username == '未登录'}}">
+   <van-button plain type="primary" bindtap="login">小程序登录</van-button>
+  </view>
+  <view class="userinfo" wx:if="{{username != '未登录'}}">
+   <van-button disabled plain type="primary">当前用户已登录</van-button>
   </view>
   <view class="usermotto">
     <text class="user-motto">{{username}}</text>

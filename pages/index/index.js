@@ -11,7 +11,7 @@ Page({
 wx.login({
   success(res) {
     wx.request({
-      url: 'http://localhost:8080/auth/oauth/token?grant_type=mobile&mobile=MINI@' + res.code + '&code='+res.code,
+      url: 'http://localhost:9999/auth/oauth2/token?grant_type=mobile&mobile=MINI@' + res.code + '&code='+res.code,
       method: 'post',
       header: {
         Authorization: 'Basic c29jaWFsOnNvY2lhbA==',
