@@ -10,14 +10,20 @@ Page({
     var self = this;
 wx.login({
   success(res) {
+    const params = {
+      mobile: 'MINI@' + res.code,
+      code: res.code
+    }
     wx.request({
-      url: 'http://localhost:9999/auth/oauth2/token?grant_type=mobile&mobile=MINI@' + res.code + '&code='+res.code,
+      // 登录端点，微服务 /auth/oauth2/token  ， 单体版本 /admin/oauth2/token
+      url: 'http://localhost:9999/auth/oauth2/token?grant_type=mobile',
       method: 'post',
+      data: params,
       header: {
-        Authorization: 'Basic c29jaWFsOnNvY2lhbA==',
+        'Authorization': 'Basic cGlnOnBpZw==',
+        'Content-Type': 'application/x-www-form-urlencoded'
       },
       success(res) {
-        console.log(res);
         if (res.statusCode === 401) {
           console.log(res.data);
           wx.showToast({
